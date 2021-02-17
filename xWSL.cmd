@@ -69,15 +69,15 @@ ECHO [%TIME:~0,8%] Install Mozilla Seamonkey and media playback (~1m30s)
 %GO% "DEBIAN_FRONTEND=noninteractive apt-fast -y install seamonkey-mozilla-build vlc vlc-bin vlc-l10n vlc-plugin-notify vlc-plugin-qt vlc-plugin-samba vlc-plugin-skins2 vlc-plugin-video-splitter vlc-plugin-visualization --no-install-recommends ; update-alternatives --install /usr/bin/www-browser www-browser /usr/bin/seamonkey 100 ; update-alternatives --install /usr/bin/gnome-www-browser gnome-www-browser /usr/bin/seamonkey 100 ; update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/seamonkey 100 ; cd /tmp/xWSL/deb ; wget -q https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb ; dpkg -i /tmp/xWSL/deb/chrome-remote-desktop_current_amd64.deb" > "%TEMP%\logs\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Install Mozilla Seamonkey and media playback.log" 2>&1
 
 ECHO [%TIME:~0,8%] Kali Packages (~10m30s)
-%GO% "cd /tmp ; apt-fast -y install kali-desktop-core kali-debtags kali-desktop-xfce kali-grant-root kali-menu kali-themes kali-themes-common kali-wallpapers-2020.4" > "%TEMP%\logs\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Kali Packages.log" 2>&1
-REM  kali-linux-default 
+%GO% "cd /tmp ; DEBIAN_FRONTEND=noninteractive apt-fast -y install kali-linux-default kali-desktop-core kali-debtags kali-desktop-xfce kali-grant-root kali-menu kali-themes kali-themes-common kali-wallpapers-2020.4 --no-install-recommends" > "%TEMP%\logs\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Kali Packages.log" 2>&1
+
 REM ## Additional items to install can go here...
 REM ## %GO% "cd /tmp ; wget https://files.multimc.org/downloads/multimc_1.4-1.deb"
 REM ## %GO% "apt-get -y install supertuxkart /tmp/multimc_1.4-1.deb"
 
 ECHO [%TIME:~0,8%] Post-install clean-up (~0m45s)
 
-%GO% "apt-get -y purge bluez bluetooth xfce4-power-manager xfce4-power-manager-plugins xfce4-power-manager-data mesa-vulkan-drivers libxslt1.1 gnustep-base-runtime libgnustep-base1.26 gnustep-base-common gnustep-common libobjc4 powermgmt-base unar ; apt-get -y clean" > ".\logs\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Post-install clean-up.log"
+%GO% "apt-get -y purge bluez xfce4-power-manager xfce4-power-manager-plugins xfce4-power-manager-data gnustep-base-runtime libgnustep-base1.26 gnustep-base-common gnustep-common libobjc4 powermgmt-base unar ; apt-get -y clean" > ".\logs\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Post-install clean-up.log"
 
 SET /A SESMAN = %RDPPRT% - 50
 %GO% "which schtasks.exe" > "%TEMP%\SCHT.tmp" & set /p SCHT=<"%TEMP%\SCHT.tmp"
