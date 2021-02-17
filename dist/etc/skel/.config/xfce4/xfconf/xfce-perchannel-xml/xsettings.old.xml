@@ -2,8 +2,8 @@
 
 <channel name="xsettings" version="1.0">
   <property name="Net" type="empty">
-    <property name="ThemeName" type="string" value="Plata-Noir-Compact"/>
-    <property name="IconThemeName" type="string" value="Papirus-Dark"/>
+    <property name="ThemeName" type="string" value="empty"/>
+    <property name="IconThemeName" type="string" value="empty"/>
     <property name="DoubleClickTime" type="empty"/>
     <property name="DoubleClickDistance" type="empty"/>
     <property name="DndDragThreshold" type="empty"/>
@@ -39,4 +39,7 @@
   <property name="Gdk" type="empty">
     <property name="WindowScalingFactor" type="int" value="HISCALE"/>
   </property>
+</channel>
+
+rty>
 </channel>
