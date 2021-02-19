@@ -27,15 +27,18 @@
         <value type="int" value="11"/>
         <value type="int" value="12"/>
         <value type="int" value="13"/>
+        <value type="int" value="31"/>
         <value type="int" value="14"/>
         <value type="int" value="24"/>
         <value type="int" value="15"/>
+        <value type="int" value="29"/>
         <value type="int" value="25"/>
         <value type="int" value="16"/>
         <value type="int" value="3"/>
         <value type="int" value="17"/>
+        <value type="int" value="30"/>
+        <value type="int" value="27"/>
         <value type="int" value="20"/>
-        <value type="int" value="19"/>
       </property>
     </property>
   </property>
@@ -89,6 +92,7 @@
       <property name="square-icons" type="bool" value="true"/>
       <property name="symbolic-icons" type="bool" value="true"/>
       <property name="known-legacy-items" type="array">
+        <value type="string" value="kazam"/>
         <value type="string" value="networkmanager applet"/>
       </property>
     </property>
@@ -96,9 +100,6 @@
       <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
     </property>
     <property name="plugin-17" type="string" value="notification-plugin"/>
-    <property name="plugin-19" type="string" value="separator">
-      <property name="style" type="uint" value="0"/>
-    </property>
     <property name="plugin-20" type="string" value="actions">
       <property name="appearance" type="uint" value="0"/>
       <property name="items" type="array">
@@ -116,6 +117,7 @@
         <value type="string" value="-logout-dialog"/>
       </property>
       <property name="button-title" type="uint" value="1"/>
+      <property name="ask-confirmation" type="bool" value="false"/>
     </property>
     <property name="plugin-18" type="string" value="separator">
       <property name="style" type="uint" value="0"/>
@@ -134,6 +136,14 @@
       <property name="style" type="uint" value="0"/>
     </property>
     <property name="plugin-26" type="string" value="separator">
+      <property name="style" type="uint" value="0"/>
+    </property>
+    <property name="plugin-27" type="string" value="separator"/>
+    <property name="plugin-29" type="string" value="separator"/>
+    <property name="plugin-30" type="string" value="separator">
+      <property name="style" type="uint" value="0"/>
+    </property>
+    <property name="plugin-31" type="string" value="separator">
       <property name="style" type="uint" value="0"/>
     </property>
   </property>
