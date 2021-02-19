@@ -38,7 +38,7 @@ ECHO:
 (COPY /Y "%TEMP%\LxRunOffline.exe" "%DISTROFULL%" > NUL ) & "%DISTROFULL%\LxRunOffline.exe" sd -n "%DISTRO%"
 
 %GO% "echo 'nameserver 1.1.1.1' > /etc/resolv.conf"
-%GO% "apt-get update ; wget -q http://mirrors.kernel.org/ubuntu/pool/main/n/nettle/libnettle7_3.5.1+really3.5.1-2_amd64.deb ; apt-get -qq install ./libnettle7_3.5.1+really3.5.1-2_amd64.deb git gnupg2 --no-install-recommends" >NUL
+%GO% "apt-get update ; wget -q http://mirrors.kernel.org/ubuntu/pool/main/n/nettle/libnettle7_3.5.1+really3.5.1-2_amd64.deb ; apt-get -qq install ./libnettle7_3.5.1+really3.5.1-2_amd64.deb git gnupg2 --no-install-recommends" > nul 2>&1
 
 %GO% "apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 2667CA5C ; echo 'deb http://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt all main' > /etc/apt/sources.list.d/mozilla.list"  > "%TEMP%\xWSL-LOGS\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Mozilla Keys.log" 2>&1
 
