@@ -8,19 +8,19 @@ One-line command to install a GUI on Kali Linix from the Windows Store.
 
 You will be asked a few questions.  The installer script finds the current DPI scaling in Windows, you can set your own value if preferred:
 
-[Kali xRDP Installer 20210219]
+     [Kali xRDP Installer 20210219]
 
-Enter name of Kali distro to install xRDP or hit Enter for default [kali-linux]:
-Port number for xRDP traffic or hit Enter for default [3399]:
-Port number for SSHd traffic or hit Enter for default [3322]:
-Set a custom DPI scale, or hit Enter for Windows default [1.5]: 2
-[Not recommended!] Type X to eXclude from Windows Defender:
+     Enter name of Kali distro to install xRDP or hit Enter for default [kali-linux]:
+     Port number for xRDP traffic or hit Enter for default [3399]:
+     Port number for SSHd traffic or hit Enter for default [3322]:
+     Set a custom DPI scale, or hit Enter for Windows default [1.5]: 2
+     [Not recommended!] Type X to eXclude from Windows Defender:
 
 The installer will download and install the [LxRunOffline](https://github.com/DDoSolitary/LxRunOffline) distro manager.  Reference times will vary depending on system performance and the presence of antivirus software.  A fast system with good Internet can finish in under 20 minutes. 
 
-    [10:03:00] Git clone and update repositories (~1m15s)
-    [10:03:16] Configure apt-fast Downloader (~0m15s)
-    [10:03:18] Kali Linux Default (~4m45s)
+     [10:03:00] Git clone and update repositories (~1m15s)
+     [10:03:16] Configure apt-fast Downloader (~0m15s)
+     [10:03:18] Kali Linux Default (~4m45s)
    
 At the end of the script you will be prompted to create a non-root user which will automatically be added to sudo'ers.
 
