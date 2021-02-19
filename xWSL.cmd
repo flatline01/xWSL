@@ -17,10 +17,10 @@ MKDIR %TEMP%\xWSL-LOGS
 
 ECHO [xWSL Installer 20201229]
 ECHO:
-ECHO Enter name of Kali distro or hit Enter to use default. 
-SET DISTRO=kali-linux& SET /p DISTRO=Keep this name simple, no space or underscore characters [kali-linux]: 
-SET RDPPRT=3399& SET /p RDPPRT=Port number for xRDP traffic or hit Enter to use default [3399]: 
-SET SSHPRT=3322& SET /p SSHPRT=Port number for SSHd traffic or hit Enter to use default [3322]: 
+ECHO 
+SET DISTRO=kali-linux& SET /p DISTRO=Enter name of Kali distro to install xRDP or hit Enter for default [kali-linux]: 
+SET RDPPRT=3399& SET /p RDPPRT=Port number for xRDP traffic or hit Enter for default [3399]: 
+SET SSHPRT=3322& SET /p SSHPRT=Port number for SSHd traffic or hit Enter for default [3322]: 
                  SET /p WINDPI=Set a custom DPI scale, or hit Enter for Windows default [%WINDPI%]: 
 FOR /f "delims=" %%a in ('PowerShell -Command "%WINDPI% * 96" ') do set "LINDPI=%%a"
 FOR /f "delims=" %%a in ('PowerShell -Command 36 * "%WINDPI%" ') do set "PANEL=%%a"
