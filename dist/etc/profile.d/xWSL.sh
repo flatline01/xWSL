@@ -17,7 +17,7 @@ if [ -z "$XDG_DATA_DIRS" ]; then
 fi
 
 export GTK2_RC_FILES=$HOME/.config/gtkrc-2.0
-export QT_QPA_PLATFORMTHEME=gtk2
+export QT_QPA_PLATFORMTHEME=qt5ct
 export QT_X11_NO_MITSHM=1
 export QT_ACCESSIBILITY=0
 export MOZ_FORCE_DISABLE_E10S=1
@@ -32,4 +32,4 @@ export XDG_RUNTIME_DIR=$HOME/.local
 export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
 export NO_AT_BRIDGE=1
-export LIBGL_ALWAYS_INDIRECT=0
+unset LIBGL_ALWAYS_INDIRECT
