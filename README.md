@@ -4,7 +4,7 @@ One-line command to install a GUI on Kali Linix from the Windows Store.
 
 **INSTRUCTIONS:  From an elevated prompt, change to your desired install directory and type/paste the following command:**
 
-    PowerShell -executionpolicy bypass -command "wget https://github.com/DesktopECHO/xWSL/raw/KaliWSL/xWSL.cmd -UseBasicParsing -OutFile xWSL.cmd ; .\xWSL.cmd"
+    PowerShell -executionpolicy bypass -command "wget https://github.com/DesktopECHO/xWSL/raw/KaliWSL/xWSL-Kali.cmd -UseBasicParsing -OutFile xWSL-Kali.cmd ; .\xWSL-Kali.cmd"
 
 You will be asked a few questions.  The installer script finds the current DPI scaling in Windows, you can set your own value if preferred:
 
@@ -13,7 +13,7 @@ You will be asked a few questions.  The installer script finds the current DPI s
      Enter name of Kali distro to install xRDP or hit Enter for default [kali-linux]:
      Port number for xRDP traffic or hit Enter for default [3399]:
      Port number for SSHd traffic or hit Enter for default [3322]:
-     Set a custom DPI scale, or hit Enter for Windows default [1.5]: 2
+     Set a custom DPI scale, or hit Enter for Windows default [1.5]: 1.25
      [Not recommended!] Type X to eXclude from Windows Defender:
 
 The installer will download and install the [LxRunOffline](https://github.com/DDoSolitary/LxRunOffline) distro manager.  Reference times will vary depending on system performance and the presence of antivirus software.  A fast system with good Internet can finish in under 20 minutes. 
@@ -24,7 +24,7 @@ The installer will download and install the [LxRunOffline](https://github.com/DD
    
 At the end of the script you will be prompted to create a non-root user which will automatically be added to sudo'ers.
 
-     Enter name of primary user for XFCE416: zero
+     Enter name of primary user for kali-linux: zero
      Enter password for zero: ********
 
      Open Windows Firewall Ports for xRDP, SSH, mDNS...
@@ -33,7 +33,7 @@ At the end of the script you will be prompted to create a non-root user which wi
      SUCCESS: The scheduled task "XFCE416" has successfully been created.
      
            Start: Mon 12/14/2020 @ 11:14
-             End: Mon 12/14/2020 @ 11:24
+             End: Mon 12/14/2020 @ 11:45
         Packages: 968
 
        - xRDP Server listening on port 13399 and SSHd on port 13322.
