@@ -1,8 +1,8 @@
 # [xRDP for Kali Linux on WSL1/2 (Version 1.0 / 20210219)](https://github.com/DesktopECHO/xWSL)
 
-One-line command to install a GUI on Kali Linix from the Windows Store. 
+One-line command to install an xRDP GUI for Kali Linux (from the Windows Store) 
 
-**INSTRUCTIONS:  From an elevated prompt, change to your desired install directory and type/paste the following command:**
+**INSTRUCTIONS:  Install and Launch Kali from the Windows Store and set credentials for the first user.  In a NEW elevated command prompt (admin rights are needed to open firewall ports for RDP and SSH) type/paste the following command:**
 
     PowerShell -executionpolicy bypass -command "wget https://github.com/DesktopECHO/xWSL/raw/KaliWSL/xWSL-Kali.cmd -UseBasicParsing -OutFile xWSL-Kali.cmd ; .\xWSL-Kali.cmd"
 
@@ -16,7 +16,7 @@ You will be asked a few questions.  The installer script finds the current DPI s
      Set a custom DPI scale, or hit Enter for Windows default [1.5]: 1.25
      [Not recommended!] Type X to eXclude from Windows Defender:
 
-The installer will download and install the [LxRunOffline](https://github.com/DDoSolitary/LxRunOffline) distro manager.  Reference times will vary depending on system performance and the presence of antivirus software.  A fast system with good Internet can finish in under 20 minutes. 
+The installer will download and install the [LxRunOffline](https://github.com/DDoSolitary/LxRunOffline) distro manager.  Reference times will vary depending on system performance and the presence of antivirus software.  A fast system with good Internet can finish in under 30 minutes. 
 
      [10:03:00] Git clone and update repositories (~1m15s)
      [10:03:16] Configure apt-fast Downloader (~0m15s)
@@ -30,7 +30,7 @@ At the end of the script you will be prompted to create a non-root user which wi
      Open Windows Firewall Ports for xRDP, SSH, mDNS...
      Building RDP Connection file, Console link, Init system...
      Building Scheduled Task...
-     SUCCESS: The scheduled task "XFCE416" has successfully been created.
+     SUCCESS: The scheduled task "kali-linux" has successfully been created.
      
            Start: Mon 12/14/2020 @ 11:14
              End: Mon 12/14/2020 @ 11:45
@@ -70,9 +70,9 @@ Example of conversion to WSL2 on machine name "LAPTOP":
  - Convert the instance to WSL2:
     ````wsl --set-version xWSL 2````
  - Restart kWSL Instance:
-    ````schtasks /run /tn xWSL````
- - Edit the RDP file on your desktop to point at the WSL2 instance by adding ````-xWSL.local```` to the hostname:
-    ````LAPTOP-xWSL.local:3399````
+    ````schtasks /run /tn kali-linux````
+ - Edit the RDP file on your desktop to point at the WSL2 instance by adding ````-kali-linux.local```` to the hostname:
+    ````LAPTOP-kali-linux.local:3399````
 
 **Make it your own:**
 
@@ -88,13 +88,7 @@ From a security standpoint, it would be best to fork this project so you (and on
 
 * When you log out out of a desktop session the entire xWSL instance is restarted, the equivilent of a clean-boot at every login.  Disconnected sessions will wait for your return.  
 * WSL1 Doesn't work with PolicyKit. Enabled gksu for apps needing elevated rights (Synaptic, root console)
-* Rebuilt xrdp 0.9.13 thanks to Sergey Dryabzhinsky @ http://packages.rusoft.ru/ppa/rusoft/xrdp/
 * [Apt-fast](https://github.com/ilikenwf/apt-fast) added to improve download speed and reliability.
 * Mozilla Seamonkey included as a stable browser that's kept up to date via apt.  Current versions of Chrome / Firefox do not work in WSL1.
-* Installed image consumes approximately X.X GB of disk space
+* Installed image consumes approximately 10GB of storage
 * XFCE uses Windows fonts (Segoe UI / Cascadia Code)
-* This is a basic installation of XFCE to save bandwidth.  If you want the complete XFCE Desktop environment run `sudo apt-get install xubuntu-desktop`
-* Uninstaller is located in root of xWSL folder, **'Uninstall xWSL.cmd'** - Make sure you **'Run As Administrator'** to ensure removal of the scheduled task and firewall rules
-
-**Screenshots:**
-
