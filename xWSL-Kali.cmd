@@ -15,7 +15,7 @@ CLS && SET RUNSTART=%date% @ %time:~0,5%
 IF NOT EXIST "%TEMP%\LxRunOffline.exe" POWERSHELL.EXE -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 ; wget https://github.com/DDoSolitary/LxRunOffline/releases/download/v3.5.0/LxRunOffline-v3.5.0-msvc.zip -UseBasicParsing -OutFile '%TEMP%\LxRunOffline-v3.5.0-msvc.zip' ; Expand-Archive -Path '%TEMP%\LxRunOffline-v3.5.0-msvc.zip' -DestinationPath '%TEMP%' -Force" > NUL
 MKDIR %TEMP%\xWSL-LOGS > nul 2>&1
 
-ECHO [Kali xRDP Installer 20210219]
+ECHO [Kali xRDP Installer 20210220]
 ECHO:
 SET DISTRO=kali-linux& SET /p DISTRO=Enter name of Kali distro to install xRDP or hit Enter for default [kali-linux]: 
 SET RDPPRT=3399& SET /p RDPPRT=Port number for xRDP traffic or hit Enter for default [3399]: 
