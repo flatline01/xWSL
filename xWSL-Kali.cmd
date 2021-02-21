@@ -35,6 +35,7 @@ IF %DEFEXL%==X (POWERSHELL.EXE -Command "wget %BASE%/excludeWSL.ps1 -UseBasicPar
 REM ## Temporarily change DNS to something we know is reliable in WSL1
 %GO% "echo 'nameserver 1.1.1.1' > /etc/resolv.conf"
 
+ECHO:
 ECHO [%TIME:~0,8%] Git clone and initial setup (~0m45s)
 
 :APTRELY
@@ -46,15 +47,15 @@ FOR /F %%A in ("%DISTROFULL%\rootfs\tmp\apterr") do If %%~zA NEQ 0 GOTO APTRELY
 ECHO [%TIME:~0,8%] Configure apt-fast Downloader (~0m15s)
 %GO% "DEBIAN_FRONTEND=noninteractive apt-get -y install /tmp/xWSL/deb/aria2_1.35.0-1build1_amd64.deb /tmp/xWSL/deb/libaria2-0_1.35.0-3_amd64.deb /tmp/xWSL/deb/libssh2-1_1.8.0-2.1build1_amd64.deb /tmp/xWSL/deb/libc-ares2_1.15.0-1build1_amd64.deb --no-install-recommends ; chmod +x /tmp/xWSL/dist/usr/local/bin/apt-fast ; cp -p /tmp/xWSL/dist/usr/local/bin/apt-fast /usr/local/bin"  > "%TEMP%\xWSL-LOGS\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% AptFast.log" 2>&1
 
-ECHO [%TIME:~0,8%] Kali-Linux-Default (~25m00s)
+ECHO [%TIME:~0,8%] Kali-Linux-Default (~20m00s)
 %GO% "DEBIAN_FRONTEND=noninteractive apt-fast -y install /tmp/xWSL/deb/gksu_2.1.0_amd64.deb /tmp/xWSL/deb/libgksu2-0_2.1.0_amd64.deb /tmp/xWSL/deb/libgnome-keyring0_3.12.0-1+b2_amd64.deb /tmp/xWSL/deb/libgnome-keyring-common_3.12.0-1_all.deb /tmp/xWSL/deb/multiarch-support_2.27-3ubuntu1_amd64.deb /tmp/xWSL/deb/libfdk-aac1_0.1.6-1_amd64.deb sysv-rc fonts-cascadia-code /tmp/xWSL/deb/wslu_3.2.1-0kali1_amd64.deb compton picom libxcb-damage0 xrdp xorgxrdp x11-apps x11-session-utils x11-xserver-utils dialog distro-info-data dumb-init inetutils-syslogd xdg-utils avahi-daemon libnss-mdns binutils putty unzip zip unar unzip dbus-x11 samba-common-bin base-files packagekit packagekit-tools lhasa arj unace liblhasa0 apt-config-icons apt-config-icons-hidpi apt-config-icons-large apt-config-icons-large-hidpi libgtkd-3-0 libvte-2.91-0 libvte-2.91-common libvted-3-0 tilix tilix-common libdbus-glib-1-2 xvfb xbase-clients python3-psutil kali-linux-default --no-install-recommends"  > "%TEMP%\xWSL-LOGS\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Kali Linux Default.log" 2>&1
 
-ECHO [%TIME:~0,8%] Kali-Desktop-XFCE (~6m00s)
-%GO% "DEBIAN_FRONTEND=noninteractive apt-fast -y install kali-desktop-xfce palemoon vlc vlc-bin vlc-l10n vlc-plugin-notify vlc-plugin-qt vlc-plugin-samba vlc-plugin-skins2 vlc-plugin-video-splitter vlc-plugin-visualization" > "%TEMP%\xWSL-LOGS\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Kali Desktop.log" 2>&1
+ECHO [%TIME:~0,8%] Kali-Desktop-XFCE (~5m00s)
+%GO% "DEBIAN_FRONTEND=noninteractive apt-fast -y install kali-desktop-xfce vlc vlc-bin vlc-l10n vlc-plugin-notify vlc-plugin-qt vlc-plugin-samba vlc-plugin-skins2 vlc-plugin-video-splitter vlc-plugin-visualization" > "%TEMP%\xWSL-LOGS\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Kali Desktop.log" 2>&1
 
 REM ## Pale Moon Browser
-%GO% "echo 'deb http://download.opensuse.org/repositories/home:/stevenpusser/Debian_Unstable/ /' | sudo tee /etc/apt/sources.list.d/home:stevenpusser.list"
-%GO% "curl -fsSL https://download.opensuse.org/repositories/home:stevenpusser/Debian_Unstable/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_stevenpusser.gpg" > nul
+%GO% "echo 'deb http://download.opensuse.org/repositories/home:/stevenpusser/Debian_Unstable/ /' | sudo tee /etc/apt/sources.list.d/home:stevenpusser.list" >NUL 2>&1 
+%GO% "curl -fsSL https://download.opensuse.org/repositories/home:stevenpusser/Debian_Unstable/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_stevenpusser.gpg" >NUL 2>&1 
 
 REM ## Additional items to install can go here...
 ECHO [%TIME:~0,8%] Additional Components (~0m30s)
