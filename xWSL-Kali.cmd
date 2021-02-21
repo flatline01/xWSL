@@ -55,7 +55,7 @@ ECHO [%TIME:~0,8%] Kali-Desktop-XFCE (~5m00s)
 
 REM ## Pale Moon Browser
 %GO% "echo 'deb http://download.opensuse.org/repositories/home:/stevenpusser/Debian_Unstable/ /' | sudo tee /etc/apt/sources.list.d/home:stevenpusser.list" >NUL 2>&1 
-%GO% "curl -fsSL https://download.opensuse.org/repositories/home:stevenpusser/Debian_Unstable/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_stevenpusser.gpg" >NUL 2>&1 
+%GO% "curl -fsSL https://download.opensuse.org/repositories/home:stevenpusser/Debian_Unstable/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_stevenpusser.gpg ; apt-get update" >NUL 2>&1 
 
 REM ## Additional items to install can go here...
 ECHO [%TIME:~0,8%] Additional Components (~0m30s)
