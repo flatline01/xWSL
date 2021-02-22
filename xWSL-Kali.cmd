@@ -33,14 +33,11 @@ SET GO="%DISTROFULL%\LxRunOffline.exe" r -n "%DISTRO%" -c
 
 IF %DEFEXL%==X (POWERSHELL.EXE -Command "wget %BASE%/excludeWSL.ps1 -UseBasicParsing -OutFile '%DISTROFULL%\excludeWSL.ps1'" & START /WAIT /MIN "Add exclusions in Windows Defender" "POWERSHELL.EXE" "-ExecutionPolicy" "Bypass" "-Command" ".\excludeWSL.ps1" "%DISTROFULL%" &  DEL ".\excludeWSL.ps1")
 
-REM ## Temporarily change DNS to something we know is reliable in WSL1
-%GO% "echo 'nameserver 1.1.1.1' > /etc/resolv.conf"
-
 ECHO:
 ECHO [%TIME:~0,8%] Git clone and initial setup (~0m45s)
 
 :APTRELY
-START /MIN /WAIT "apt-get update" %GO% "apt-get update 2> /tmp/apterr"
+START /MIN /WAIT "echo 'nameserver 1.1.1.1' > /etc/resolv.conf ; apt-get update" %GO% "apt-get update 2> /tmp/apterr"
 FOR /F %%A in ("%DISTROFULL%\rootfs\tmp\apterr") do If %%~zA NEQ 0 GOTO APTRELY 
 
 %GO% "apt-get -y install git gnupg2 --no-install-recommends ; cd /tmp ; git clone -b %BRANCH% --depth=1 https://github.com/%GITORG%/%GITPRJ%.git" > "%TEMP%\xWSL-LOGS\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Git Clone.log" 2>&1

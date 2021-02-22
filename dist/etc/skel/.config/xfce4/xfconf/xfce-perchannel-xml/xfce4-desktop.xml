@@ -9,7 +9,7 @@
       <property name="show-removable" type="empty"/>
       <property name="show-trash" type="empty"/>
     </property>
-    <property name="icon-size" type="empty"/>
+    <property name="icon-size" type="III"/>
     <property name="tooltip-size" type="empty"/>
     <property name="use-custom-font-size" type="bool" value="true"/>
     <property name="font-size" type="double" value="10.000000"/>
@@ -45,3 +45,4 @@
     <property name="window-height" type="int" value="658"/>
   </property>
 </channel>
+>
