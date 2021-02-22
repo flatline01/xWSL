@@ -122,6 +122,7 @@ ECHO Building Scheduled Task...
 POWERSHELL -C "$WAI = (whoami) ; (Get-Content .\xWSL.xml).replace('AAAA', $WAI) | Set-Content .\xWSL.xml"
 POWERSHELL -C "$WAC = (pwd)    ; (Get-Content .\xWSL.xml).replace('QQQQ', $WAC) | Set-Content .\xWSL.xml"
 SCHTASKS /Create /TN:%DISTRO% /XML ./xWSL.xml /F
+PING -n 6 LOCALHOST > NUL 
 ECHO:
 ECHO:      Start: %RUNSTART%
 ECHO:        End: %RUNEND%
@@ -135,7 +136,7 @@ ECHO:  - (Re)launch init from the Task Scheduler or by running the following com
 ECHO:    schtasks.exe /run /tn %DISTRO%
 ECHO: 
 ECHO: Installaion of xRDP GUI on "%DISTRO%" complete, graphical login will start in a few seconds...  
-PING -n 8 LOCALHOST > NUL 
+PING -n 6 LOCALHOST > NUL 
 START "Remote Desktop Connection" "MSTSC.EXE" "/V" "%DISTROFULL%\%DISTRO% (%XU%) Desktop.rdp"
 CD ..
 ECHO: 
