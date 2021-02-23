@@ -55,10 +55,10 @@ ECHO [%TIME:~0,8%] Kali-Desktop-XFCE (~5m00s)
 %GO% "DEBIAN_FRONTEND=noninteractive apt-fast -y install kali-desktop-xfce ; dpkg --purge pcscd blueman bluez pulseaudio-module-bluetooth" > "%TEMP%\xWSL-LOGS\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Kali-Desktop-XFCE.log" 2>&1
 
 REM ## Additional items to install can go here...
-ECHO [%TIME:~0,8%] Additional Components (~0m30s)
+ECHO [%TIME:~0,8%] Additional Components (~1m00s)
 %GO% "echo 'deb http://download.opensuse.org/repositories/home:/stevenpusser/Debian_Unstable/ /' | sudo tee /etc/apt/sources.list.d/home:stevenpusser.list" >NUL 2>&1 
-%GO% "curl -fsSL https://download.opensuse.org/repositories/home:stevenpusser/Debian_Unstable/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_stevenpusser.gpg ; apt-get update ; dpkg -r firefox-esr" >NUL 2>&1 
-%GO% "wget -q https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb ; apt-get -y install palemoon ./chrome-remote-desktop_current_amd64.deb" > "%TEMP%\xWSL-LOGS\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Additional Components.log" 2>&1
+%GO% "curl -fsSL https://download.opensuse.org/repositories/home:stevenpusser/Debian_Unstable/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_stevenpusser.gpg ; apt-get update ; dpkg --purge firefox-esr gir1.2-ayatanaappindicator3-0.1 gir1.2-nm-1.0 libccid libsbc1" >NUL 2>&1 
+%GO% "wget -q https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb ; apt-get -y install palemoon ./chrome-remote-desktop_current_amd64.deb /tmp/xWSL/deb/zenmap_7.80+dfsg1-1build1_all.deb /tmp/xWSL/deb/python-gtk2_2.24.0-5.1+b1_amd64.deb /tmp/xWSL/deb/python-gobject-2_2.28.6-13+b1_amd64.deb /tmp/xWSL/deb/python-numpy_1.16.2-1_amd64.deb /tmp/xWSL/deb/python-cairo_1.16.2-1+b1_amd64.deb /tmp/xWSL/deb/libffi6_3.2.1-9_amd64.deb" > "%TEMP%\xWSL-LOGS\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Additional Components.log" 2>&1
 
 %GO% "update-alternatives --set x-terminal-emulator /usr/bin/tilix.wrapper ; update-alternatives --install /usr/bin/www-browser www-browser /usr/bin/palemoon 100 ; update-alternatives --install /usr/bin/gnome-www-browser gnome-www-browser /usr/bin/palemoon 100 ; update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/palemoon 100" > nul 2>&1
 %GO% "mv /usr/bin/pkexec /usr/bin/pkexec.orig ; echo gksudo -k -S -g \$1 > /usr/bin/pkexec ; chmod 755 /usr/bin/pkexec"
