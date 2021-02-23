@@ -91,7 +91,7 @@ CD %DISTROFULL%
 ECHO:
 SET /p XU=Create a NEW user in Kali for xRDP GUI login. Enter username: 
 POWERSHELL -Command $prd = read-host "Enter password for %XU%" -AsSecureString ; $BSTR=[System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($prd) ; [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR) > .tmp & set /p PWO=<.tmp
-%GO% "useradd -m -p nulltemp -s /bin/bash %XU%"
+%GO% "useradd -m -p nulltemp -s /bin/bash -u 1001 %XU%"
 %GO% "(echo '%XU%:%PWO%') | chpasswd"
 %GO% "echo '%XU% ALL=(ALL:ALL) ALL' >> /etc/sudoers"
 %GO% "sed -i 's/PLACEHOLDER/%XU%/g' /tmp/xWSL/xWSL.rdp"
@@ -136,6 +136,7 @@ ECHO:  - (Re)launch init from the Task Scheduler or by running the following com
 ECHO:    schtasks.exe /run /tn %DISTRO%
 ECHO: 
 ECHO: Installaion of xRDP GUI on "%DISTRO%" complete, graphical login will start in a few seconds...  
+%TEMP%\LxRunOffline.exe set-uid -n "%DISTRO%" -v 1001
 PING -n 6 LOCALHOST > NUL 
 START "Remote Desktop Connection" "MSTSC.EXE" "/V" "%DISTROFULL%\%DISTRO% (%XU%) Desktop.rdp"
 CD ..
