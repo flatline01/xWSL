@@ -45,6 +45,9 @@ ECHO [%TIME:~0,8%] Git clone and initial setup (~0m45s)
 REM Workaround potential DNS issues in WSL
 %GO% "rm -rf /etc/resolv.conf ; echo 'nameserver 1.1.1.1' > /etc/resolv.conf ; echo 'nameserver 8.8.8.8' >> /etc/resolv.conf ; chattr +i /etc/resolv.conf" >NUL 2>&1 
 
+REM Add SeaMonkey Repo
+%GO% "apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 2667CA5C ; echo 'deb http://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt all main' >> /etc/apt/sources.list.d/mozilla.list"
+
 :APTRELY
 START /MIN /WAIT "apt-get update" %GO% "apt-get update 2> apterr"
 FOR /F %%A in ("apterr") do If %%~zA NEQ 0 GOTO APTRELY 
@@ -62,11 +65,9 @@ ECHO [%TIME:~0,8%] Kali-Desktop-XFCE (~5m00s)
 
 REM ## Additional items to install can go here...
 ECHO [%TIME:~0,8%] Additional Components (~1m00s)
-%GO% "echo 'deb http://download.opensuse.org/repositories/home:/stevenpusser/Debian_Unstable/ /' | sudo tee /etc/apt/sources.list.d/home:stevenpusser.list" >NUL 2>&1 
-%GO% "curl -fsSL https://download.opensuse.org/repositories/home:stevenpusser/Debian_Unstable/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_stevenpusser.gpg ; apt-get update" >NUL 2>&1 
-%GO% "wget -q https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb ; apt-get -y install palemoon ./chrome-remote-desktop_current_amd64.deb /tmp/xWSL/deb/zenmap_7.80+dfsg1-1build1_all.deb /tmp/xWSL/deb/python-gtk2_2.24.0-5.1+b1_amd64.deb /tmp/xWSL/deb/python-gobject-2_2.28.6-13+b1_amd64.deb /tmp/xWSL/deb/python-numpy_1.16.2-1_amd64.deb /tmp/xWSL/deb/python-cairo_1.16.2-1+b1_amd64.deb /tmp/xWSL/deb/libffi6_3.2.1-9_amd64.deb" > "%TEMP%\Kali-xRDP\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Additional Components.log" 2>&1
+%GO% "wget -q https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb ; apt-get -y install seamonkey-mozilla-build ./chrome-remote-desktop_current_amd64.deb /tmp/xWSL/deb/zenmap_7.80+dfsg1-1build1_all.deb /tmp/xWSL/deb/python-gtk2_2.24.0-5.1+b1_amd64.deb /tmp/xWSL/deb/python-gobject-2_2.28.6-13+b1_amd64.deb /tmp/xWSL/deb/python-numpy_1.16.2-1_amd64.deb /tmp/xWSL/deb/python-cairo_1.16.2-1+b1_amd64.deb /tmp/xWSL/deb/libffi6_3.2.1-9_amd64.deb" > "%TEMP%\Kali-xRDP\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Additional Components.log" 2>&1
 
-%GO% "update-alternatives --set x-terminal-emulator /usr/bin/tilix.wrapper ; update-alternatives --install /usr/bin/www-browser www-browser /usr/bin/palemoon 100 ; update-alternatives --install /usr/bin/gnome-www-browser gnome-www-browser /usr/bin/palemoon 100 ; update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/palemoon 100" > nul 2>&1
+%GO% "update-alternatives --set x-terminal-emulator /usr/bin/tilix.wrapper ; update-alternatives --install /usr/bin/www-browser www-browser /usr/bin/seamonkey 100 ; update-alternatives --install /usr/bin/gnome-www-browser gnome-www-browser /usr/bin/seamonkey 100 ; update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/seamonkey 100" > nul 2>&1
 %GO% "mv /usr/bin/pkexec /usr/bin/pkexec.orig ; echo gksudo -k -S -g \$1 > /usr/bin/pkexec ; chmod 755 /usr/bin/pkexec"
 %GO% "which schtasks.exe" > "%TEMP%\SCHT.tmp" & set /p SCHT=<"%TEMP%\SCHT.tmp"
 %GO% "sed -i 's#SCHT#%SCHT%#g' /tmp/xWSL/dist/usr/local/bin/restartwsl ; sed -i 's#DISTRO#%DISTRO%#g' /tmp/xWSL/dist/usr/local/bin/restartwsl"
