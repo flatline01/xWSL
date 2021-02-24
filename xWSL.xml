@@ -41,7 +41,7 @@
   </Settings>
   <Actions Context="Author">
     <Exec>
-      <Command>QQQQ\Init.cmd</Command>
+      <Command>QQQQ\Kali-xRDP.cmd</Command>
     </Exec>
   </Actions>
 </Task>

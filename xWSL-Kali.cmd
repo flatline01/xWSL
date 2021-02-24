@@ -108,14 +108,14 @@ NETSH AdvFirewall Firewall add rule name="%DISTRO% Secure Shell" dir=in action=a
 NETSH AdvFirewall Firewall add rule name="%DISTRO% Avahi Daemon" dir=in action=allow protocol=UDP localport=5353,53791 > NUL
 START /MIN "%DISTRO% Init" WSL ~ -u root -d %DISTRO% -e initwsl 2
 ECHO Building RDP Connection file, Console link, Init system...
-ECHO @START /MIN "%DISTRO%" WSLCONFIG.EXE /t %DISTRO%                  >  "%LOCALAPPDATA%\Init.cmd"
-ECHO @Powershell.exe -Command "Start-Sleep 3"                          >> "%LOCALAPPDATA%\Init.cmd"
-ECHO @START /MIN "%DISTRO%" WSL.EXE ~ -u root -d %DISTRO% -e initwsl 2 >> "%LOCALAPPDATA%\Init.cmd"
+ECHO @START /MIN "%DISTRO%" WSLCONFIG.EXE /t %DISTRO%                  >  "%LOCALAPPDATA%\Kali-xRDP.cmd"
+ECHO @Powershell.exe -Command "Start-Sleep 3"                          >> "%LOCALAPPDATA%\Kali-xRDP.cmd"
+ECHO @START /MIN "%DISTRO%" WSL.EXE ~ -u root -d %DISTRO% -e initwsl 2 >> "%LOCALAPPDATA%\Kali-xRDP.cmd"
 POWERSHELL -Command "Copy-Item '%DISTROFULL%\%DISTRO% (%XU%) Desktop.rdp' ([Environment]::GetFolderPath('Desktop'))"
 ECHO Building Scheduled Task...
 %GO% "cp /tmp/xWSL/xWSL.xml ."
-POWERSHELL -C "$WAI = (whoami)       ; (Get-Content .\xWSL.xml).replace('AAAA', $WAI) | Set-Content .\xWSL.xml"
-POWERSHELL -C "$WAC = %LOCALAPPDATA% ; (Get-Content .\xWSL.xml).replace('QQQQ', $WAC) | Set-Content .\xWSL.xml"
+POWERSHELL -C "$WAI = (whoami)         ; (Get-Content .\xWSL.xml).replace('AAAA', $WAI) | Set-Content .\xWSL.xml"
+POWERSHELL -C "$WAC = '%LOCALAPPDATA%' ; (Get-Content .\xWSL.xml).replace('QQQQ', $WAC) | Set-Content .\xWSL.xml"
 SCHTASKS /Create /TN:%DISTRO% /XML ./xWSL.xml /F
 PING -n 6 LOCALHOST > NUL 
 ECHO:
