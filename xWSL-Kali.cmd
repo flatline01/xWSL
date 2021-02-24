@@ -6,6 +6,12 @@ SET GITPRJ=xWSL
 SET BRANCH=KaliWSL
 SET BASE=https://github.com/%GITORG%/%GITPRJ%/raw/%BRANCH%
 
+REM ## Enable WSL if needed
+PowerShell.exe -Command "$WSL = Get-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Windows-Subsystem-Linux' ; if ($WSL.State -eq 'Disabled') {Enable-WindowsOptionalFeature -FeatureName $WSL.FeatureName -Online}"
+
+REM ## Install Kali from AppStore if needed
+PowerShell.exe -Command "wsl -d kali-linux -e 'uname' > $env:TEMP\DistroTestAlive.TMP ; $alive = Get-Content $env:TEMP\DistroTestAlive.TMP ; IF ($Alive -ne 'Linux') {Start-BitsTransfer https://aka.ms/wsl-kali-linux-new -Destination $env:TEMP\Kali.AppX ; Add-AppxPackage $env:TEMP\Kali.AppX ; Kali.EXE install --root}"
+
 REM ## Find system DPI setting and get installation parameters
 IF NOT EXIST "%TEMP%\windpi.ps1" POWERSHELL.EXE -ExecutionPolicy Bypass -Command "wget '%BASE%/windpi.ps1' -UseBasicParsing -OutFile '%TEMP%\windpi.ps1'"
 FOR /f "delims=" %%a in ('powershell -ExecutionPolicy bypass -command "%TEMP%\windpi.ps1" ') do set "WINDPI=%%a"
@@ -13,15 +19,15 @@ FOR /f "delims=" %%a in ('powershell -ExecutionPolicy bypass -command "%TEMP%\wi
 CLS && SET RUNSTART=%date% @ %time:~0,5%
 
 IF NOT EXIST "%TEMP%\LxRunOffline.exe" POWERSHELL.EXE -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 ; wget https://github.com/DDoSolitary/LxRunOffline/releases/download/v3.5.0/LxRunOffline-v3.5.0-msvc.zip -UseBasicParsing -OutFile '%TEMP%\LxRunOffline-v3.5.0-msvc.zip' ; Expand-Archive -Path '%TEMP%\LxRunOffline-v3.5.0-msvc.zip' -DestinationPath '%TEMP%' -Force" > NUL
-MKDIR %TEMP%\xWSL-LOGS >NUL 2>&1 
+MKDIR %TEMP%\Kali-xRDP >NUL 2>&1 
 
-ECHO [Kali xRDP Installer 20210221]
+ECHO [Kali xRDP Installer 20210222]
 ECHO:
-SET DISTRO=kali-linux& SET /p DISTRO=Enter name of Kali distro to install xRDP or hit Enter for default [kali-linux]: 
+SET DISTRO=kali-linux
 SET RDPPRT=3399& SET /p RDPPRT=Port number for xRDP traffic or hit Enter for default [3399]: 
 SET SSHPRT=3322& SET /p SSHPRT=Port number for SSHd traffic or hit Enter for default [3322]: 
                  SET /p WINDPI=Set a custom DPI scale, or hit Enter for Windows default [%WINDPI%]: 
-FOR /f "delims=" %%a in ('PowerShell -Command "%WINDPI% * 96" ') do set "LINDPI=%%a"
+FOR /f "delims=" %%a in ('PowerShell -Command 96 * "%WINDPI%" ') do set "LINDPI=%%a"
 FOR /f "delims=" %%a in ('PowerShell -Command 32 * "%WINDPI%" ') do set "PANEL=%%a"
 FOR /f "delims=" %%a in ('PowerShell -Command 48 * "%WINDPI%" ') do set "ICONS=%%a"
 SET DEFEXL=NONO& SET /p DEFEXL=[Not recommended!] Type X to eXclude from Windows Defender: 
@@ -37,28 +43,28 @@ ECHO:
 ECHO [%TIME:~0,8%] Git clone and initial setup (~0m45s)
 
 REM Workaround potential DNS issues in WSL
-%GO% "rm -rf /etc/resolv.conf ; echo 'nameserver 1.1.1.1' > /etc/resolv.conf ; echo 'nameserver 8.8.8.8' >> /etc/resolv.conf ; sudo chattr +i /etc/resolv.conf" >NUL 2>&1 
+%GO% "rm -rf /etc/resolv.conf ; echo 'nameserver 1.1.1.1' > /etc/resolv.conf ; echo 'nameserver 8.8.8.8' >> /etc/resolv.conf ; chattr +i /etc/resolv.conf" >NUL 2>&1 
 
 :APTRELY
-START /MIN /WAIT "apt-get update" %GO% "apt-get update 2> /tmp/apterr"
-FOR /F %%A in ("%DISTROFULL%\rootfs\tmp\apterr") do If %%~zA NEQ 0 GOTO APTRELY 
+START /MIN /WAIT "apt-get update" %GO% "apt-get update 2> apterr"
+FOR /F %%A in ("apterr") do If %%~zA NEQ 0 GOTO APTRELY 
 
-%GO% "apt-get -y install git gnupg2 --no-install-recommends ; cd /tmp ; git clone -b %BRANCH% --depth=1 https://github.com/%GITORG%/%GITPRJ%.git" > "%TEMP%\xWSL-LOGS\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Git Clone.log" 2>&1
+%GO% "apt-get -y install git gnupg2 --no-install-recommends ; cd /tmp ; git clone -b %BRANCH% --depth=1 https://github.com/%GITORG%/%GITPRJ%.git" > "%TEMP%\Kali-xRDP\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Git Clone.log" 2>&1
 
 ECHO [%TIME:~0,8%] Configure apt-fast downloader (~0m15s)
-%GO% "DEBIAN_FRONTEND=noninteractive apt-get -y install /tmp/xWSL/deb/aria2_1.35.0-1build1_amd64.deb /tmp/xWSL/deb/libaria2-0_1.35.0-3_amd64.deb /tmp/xWSL/deb/libssh2-1_1.8.0-2.1build1_amd64.deb /tmp/xWSL/deb/libc-ares2_1.15.0-1build1_amd64.deb --no-install-recommends ; chmod +x /tmp/xWSL/dist/usr/local/bin/apt-fast ; cp -p /tmp/xWSL/dist/usr/local/bin/apt-fast /usr/local/bin"  > "%TEMP%\xWSL-LOGS\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Configure apt-fast downloader.log" 2>&1
+%GO% "DEBIAN_FRONTEND=noninteractive apt-get -y install /tmp/xWSL/deb/aria2_1.35.0-1build1_amd64.deb /tmp/xWSL/deb/libaria2-0_1.35.0-3_amd64.deb /tmp/xWSL/deb/libssh2-1_1.8.0-2.1build1_amd64.deb /tmp/xWSL/deb/libc-ares2_1.15.0-1build1_amd64.deb --no-install-recommends ; chmod +x /tmp/xWSL/dist/usr/local/bin/apt-fast ; cp -p /tmp/xWSL/dist/usr/local/bin/apt-fast /usr/local/bin"  > "%TEMP%\Kali-xRDP\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Configure apt-fast downloader.log" 2>&1
 
 ECHO [%TIME:~0,8%] Install xRDP and Kali-Linux-Core packages (~3m00s)
-%GO% "DEBIAN_FRONTEND=noninteractive apt-fast -y install /tmp/xWSL/deb/gksu_2.1.0_amd64.deb /tmp/xWSL/deb/libgksu2-0_2.1.0_amd64.deb /tmp/xWSL/deb/libgnome-keyring0_3.12.0-1+b2_amd64.deb /tmp/xWSL/deb/libgnome-keyring-common_3.12.0-1_all.deb /tmp/xWSL/deb/multiarch-support_2.27-3ubuntu1_amd64.deb /tmp/xWSL/deb/libfdk-aac1_0.1.6-1_amd64.deb /tmp/xWSL/deb/wslu_3.2.1-0kali1_amd64.deb sysv-rc fonts-cascadia-code compton-conf picom libxcb-damage0 xrdp xorgxrdp x11-apps x11-session-utils x11-xserver-utils dialog distro-info-data dumb-init inetutils-syslogd xdg-utils avahi-daemon libnss-mdns binutils putty unzip zip unar unzip dbus-x11 samba-common-bin lhasa arj unace liblhasa0 apt-config-icons apt-config-icons-hidpi apt-config-icons-large apt-config-icons-large-hidpi libgtkd-3-0 libvte-2.91-0 libvte-2.91-common libvted-3-0 tilix tilix-common libdbus-glib-1-2 xvfb xbase-clients python3-psutil kali-linux-core synaptic --no-install-recommends"  > "%TEMP%\xWSL-LOGS\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Install xRDP and Kali-Linux-Core packages.log" 2>&1
+%GO% "DEBIAN_FRONTEND=noninteractive apt-fast -y install /tmp/xWSL/deb/gksu_2.1.0_amd64.deb /tmp/xWSL/deb/libgksu2-0_2.1.0_amd64.deb /tmp/xWSL/deb/libgnome-keyring0_3.12.0-1+b2_amd64.deb /tmp/xWSL/deb/libgnome-keyring-common_3.12.0-1_all.deb /tmp/xWSL/deb/multiarch-support_2.27-3ubuntu1_amd64.deb /tmp/xWSL/deb/libfdk-aac1_0.1.6-1_amd64.deb /tmp/xWSL/deb/wslu_3.2.1-0kali1_amd64.deb sysv-rc fonts-cascadia-code compton-conf picom libxcb-damage0 xrdp xorgxrdp x11-apps x11-session-utils x11-xserver-utils dialog distro-info-data dumb-init inetutils-syslogd xdg-utils avahi-daemon libnss-mdns binutils putty unzip zip unar unzip dbus-x11 samba-common-bin lhasa arj unace liblhasa0 apt-config-icons apt-config-icons-hidpi apt-config-icons-large apt-config-icons-large-hidpi libgtkd-3-0 libvte-2.91-0 libvte-2.91-common libvted-3-0 tilix tilix-common libdbus-glib-1-2 xvfb xbase-clients python3-psutil kali-linux-core synaptic --no-install-recommends"  > "%TEMP%\Kali-xRDP\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Install xRDP and Kali-Linux-Core packages.log" 2>&1
 
 ECHO [%TIME:~0,8%] Kali-Desktop-XFCE (~5m00s)
-%GO% "DEBIAN_FRONTEND=noninteractive apt-fast -y install kali-desktop-xfce ; apt -y purge gvfs gvfs-backends gvfs-daemons gvfs-fuse udisks2 pcscd blueman bluez pulseaudio-module-bluetooth firefox-esr gir1.2-ayatanaappindicator3-0.1 gir1.2-nm-1.0 libccid libsbc1" > "%TEMP%\xWSL-LOGS\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Kali-Desktop-XFCE.log" 2>&1
+%GO% "DEBIAN_FRONTEND=noninteractive apt-fast -y install kali-desktop-xfce ; apt -y purge gvfs gvfs-backends gvfs-daemons gvfs-fuse udisks2 pcscd blueman bluez pulseaudio-module-bluetooth firefox-esr gir1.2-ayatanaappindicator3-0.1 gir1.2-nm-1.0 libccid libsbc1" > "%TEMP%\Kali-xRDP\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Kali-Desktop-XFCE.log" 2>&1
 
 REM ## Additional items to install can go here...
 ECHO [%TIME:~0,8%] Additional Components (~1m00s)
 %GO% "echo 'deb http://download.opensuse.org/repositories/home:/stevenpusser/Debian_Unstable/ /' | sudo tee /etc/apt/sources.list.d/home:stevenpusser.list" >NUL 2>&1 
 %GO% "curl -fsSL https://download.opensuse.org/repositories/home:stevenpusser/Debian_Unstable/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_stevenpusser.gpg ; apt-get update" >NUL 2>&1 
-%GO% "wget -q https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb ; apt-get -y install palemoon ./chrome-remote-desktop_current_amd64.deb /tmp/xWSL/deb/zenmap_7.80+dfsg1-1build1_all.deb /tmp/xWSL/deb/python-gtk2_2.24.0-5.1+b1_amd64.deb /tmp/xWSL/deb/python-gobject-2_2.28.6-13+b1_amd64.deb /tmp/xWSL/deb/python-numpy_1.16.2-1_amd64.deb /tmp/xWSL/deb/python-cairo_1.16.2-1+b1_amd64.deb /tmp/xWSL/deb/libffi6_3.2.1-9_amd64.deb" > "%TEMP%\xWSL-LOGS\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Additional Components.log" 2>&1
+%GO% "wget -q https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb ; apt-get -y install palemoon ./chrome-remote-desktop_current_amd64.deb /tmp/xWSL/deb/zenmap_7.80+dfsg1-1build1_all.deb /tmp/xWSL/deb/python-gtk2_2.24.0-5.1+b1_amd64.deb /tmp/xWSL/deb/python-gobject-2_2.28.6-13+b1_amd64.deb /tmp/xWSL/deb/python-numpy_1.16.2-1_amd64.deb /tmp/xWSL/deb/python-cairo_1.16.2-1+b1_amd64.deb /tmp/xWSL/deb/libffi6_3.2.1-9_amd64.deb" > "%TEMP%\Kali-xRDP\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Additional Components.log" 2>&1
 
 %GO% "update-alternatives --set x-terminal-emulator /usr/bin/tilix.wrapper ; update-alternatives --install /usr/bin/www-browser www-browser /usr/bin/palemoon 100 ; update-alternatives --install /usr/bin/gnome-www-browser gnome-www-browser /usr/bin/palemoon 100 ; update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/palemoon 100" > nul 2>&1
 %GO% "mv /usr/bin/pkexec /usr/bin/pkexec.orig ; echo gksudo -k -S -g \$1 > /usr/bin/pkexec ; chmod 755 /usr/bin/pkexec"
