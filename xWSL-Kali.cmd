@@ -24,9 +24,10 @@ MKDIR %TEMP%\Kali-xRDP >NUL 2>&1
 ECHO [Kali xRDP Installer 20210222]
 ECHO:
 SET DISTRO=kali-linux
+ECHO                           Set display scale from 1.0 to 3.0
+                 SET /p WINDPI=in increments of .25 or hit Enter for your current display [%WINDPI%]: 
 SET RDPPRT=3399& SET /p RDPPRT=Port number for xRDP traffic or hit Enter for default [3399]: 
-SET SSHPRT=3322& SET /p SSHPRT=Port number for SSHd traffic or hit Enter for default [3322]: 
-                 SET /p WINDPI=Set a custom DPI scale, or hit Enter for Windows default [%WINDPI%]: 
+SET SSHPRT=3322& SET /p SSHPRT=Port number for SSHd traffic or hit Enter for default [3322]:
 FOR /f "delims=" %%a in ('PowerShell -Command 96 * "%WINDPI%" ') do set "LINDPI=%%a"
 FOR /f "delims=" %%a in ('PowerShell -Command 32 * "%WINDPI%" ') do set "PANEL=%%a"
 FOR /f "delims=" %%a in ('PowerShell -Command 48 * "%WINDPI%" ') do set "ICONS=%%a"
@@ -42,9 +43,10 @@ IF %DEFEXL%==X (POWERSHELL.EXE -Command "wget %BASE%/excludeWSL.ps1 -UseBasicPar
 ECHO:
 ECHO [%TIME:~0,8%] Git clone and initial setup (~0m45s)
 
-REM Workaround potential DNS issues in WSL
+REM ## Workaround potential DNS issues in WSL
 %GO% "rm -rf /etc/resolv.conf ; echo 'nameserver 1.1.1.1' > /etc/resolv.conf ; echo 'nameserver 8.8.8.8' >> /etc/resolv.conf ; chattr +i /etc/resolv.conf" >NUL 2>&1 
 
+REM ## Loop until we get a successful repo update
 :APTRELY
 START /MIN /WAIT "apt-get update" %GO% "apt-get update 2> apterr"
 FOR /F %%A in ("apterr") do If %%~zA NEQ 0 GOTO APTRELY 
