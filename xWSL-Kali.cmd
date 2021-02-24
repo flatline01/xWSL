@@ -115,7 +115,7 @@ POWERSHELL -Command "Copy-Item '%DISTROFULL%\%DISTRO% (%XU%) Desktop.rdp' ([Envi
 ECHO Building Scheduled Task...
 %GO% "cp /tmp/xWSL/xWSL.xml ."
 POWERSHELL -C "$WAI = (whoami)                       ; (Get-Content .\xWSL.xml).replace('AAAA', $WAI) | Set-Content .\xWSL.xml"
-POWERSHELL -C "$WAC = "%LOCALAPPDATA%\Kali-xRDP.cmd" ; (Get-Content .\xWSL.xml).replace('QQQQ', $WAC) | Set-Content .\xWSL.xml"
+POWERSHELL -C "$WAC = '%LOCALAPPDATA%\Kali-xRDP.cmd' ; (Get-Content .\xWSL.xml).replace('QQQQ', $WAC) | Set-Content .\xWSL.xml"
 SCHTASKS /Create /TN:%DISTRO% /XML ./xWSL.xml /F
 PING -n 6 LOCALHOST > NUL 
 ECHO:
