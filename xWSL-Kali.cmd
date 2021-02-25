@@ -10,7 +10,7 @@ REM ## Enable WSL if needed
 PowerShell.exe -Command "$WSL = Get-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Windows-Subsystem-Linux' ; if ($WSL.State -eq 'Disabled') {Enable-WindowsOptionalFeature -FeatureName $WSL.FeatureName -Online}"
 
 REM ## Install Kali from AppStore if needed
-PowerShell.exe -Command "wsl -d kali-linux -e 'uname' > $env:TEMP\DistroTestAlive.TMP ; $alive = Get-Content $env:TEMP\DistroTestAlive.TMP ; IF ($Alive -ne 'Linux') {Start-BitsTransfer https://aka.ms/wsl-kali-linux-new -Destination $env:TEMP\Kali.AppX ; Add-AppxPackage $env:TEMP\Kali.AppX ; Kali.exe install --root ; Kali.exe run wget https://http.kali.org/kali/pool/main/k/kali-archive-keyring/kali-archive-keyring_2020.2_all.deb ; dpkg -i kali-archive-keyring_2020.2_all.deb' }" >NUL 2>&1 
+PowerShell.exe -Command "wsl -d kali-linux -e 'uname' > $env:TEMP\DistroTestAlive.TMP ; $alive = Get-Content $env:TEMP\DistroTestAlive.TMP ; IF ($Alive -ne 'Linux') {Start-BitsTransfer https://aka.ms/wsl-kali-linux-new -Destination $env:TEMP\Kali.AppX ; Add-AppxPackage $env:TEMP\Kali.AppX ; Kali.exe install --root ; Kali.exe run 'wget https://http.kali.org/kali/pool/main/k/kali-archive-keyring/kali-archive-keyring_2020.2_all.deb ; dpkg -i kali-archive-keyring_2020.2_all.deb' }" >NUL 2>&1 
 
 REM ## Find system DPI setting and get installation parameters
 IF NOT EXIST "%TEMP%\windpi.ps1" POWERSHELL.EXE -ExecutionPolicy Bypass -Command "wget '%BASE%/windpi.ps1' -UseBasicParsing -OutFile '%TEMP%\windpi.ps1'"
@@ -48,6 +48,7 @@ REM ## Workaround potential DNS issues in WSL
 
 REM ## Loop until we get a successful repo update
 :APTRELY
+IF EXIST apterr DEL apterr
 START /MIN /WAIT "apt-get update" %GO% "apt-get update 2> apterr"
 FOR /F %%A in ("apterr") do If %%~zA NEQ 0 GOTO APTRELY 
 
