@@ -1,2 +1,3 @@
-WebBrowser=seamonkey
-TerminalEmulator=debian-x-terminal-emulator
+WebBrowser=custom-WebBrowser
+TerminalEmulator=custom-TerminalEmulator
+MailReader=custom-MailReader
