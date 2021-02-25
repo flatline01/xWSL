@@ -24,7 +24,7 @@ MKDIR %TEMP%\Kali-xRDP >NUL 2>&1
 ECHO [Kali xRDP Installer 20210222]
 ECHO:
 ECHO Hit Enter to use your current display scaling in Windows
-SET /p WINDPI= or set the desired value (1.0 to 3.0 in .25 increments) [%WINDPI%]: 
+SET /p WINDPI=or set the desired value (1.0 to 3.0 in .25 increments) [%WINDPI%]: 
 SET RDPPRT=3399& SET /p RDPPRT=Port number for xRDP traffic or hit Enter for default [3399]: 
 SET SSHPRT=3322& SET /p SSHPRT=Port number for SSHd traffic or hit Enter for default [3322]:
 FOR /f "delims=" %%a in ('PowerShell -Command 96 * "%WINDPI%" ') do set "LINDPI=%%a"
