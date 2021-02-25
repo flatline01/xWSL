@@ -23,16 +23,19 @@ MKDIR %TEMP%\Kali-xRDP >NUL 2>&1
 
 ECHO [Kali xRDP Installer 20210222]
 ECHO:
-SET DISTRO=kali-linux
-ECHO                           Set display scale from 1.0 to 3.0
-                 SET /p WINDPI=in increments of .25 or hit Enter for your current display [%WINDPI%]: 
+ECHO Hit Enter to use your current display scaling in Windows
+SET /p WINDPI=or set your desired value (1.0 to 3.0 in .25 increments) [%WINDPI%]: 
+ECHO:
 SET RDPPRT=3399& SET /p RDPPRT=Port number for xRDP traffic or hit Enter for default [3399]: 
+ECHO:
 SET SSHPRT=3322& SET /p SSHPRT=Port number for SSHd traffic or hit Enter for default [3322]:
+ECHO:
 FOR /f "delims=" %%a in ('PowerShell -Command 96 * "%WINDPI%" ') do set "LINDPI=%%a"
 FOR /f "delims=" %%a in ('PowerShell -Command 32 * "%WINDPI%" ') do set "PANEL=%%a"
 FOR /f "delims=" %%a in ('PowerShell -Command 48 * "%WINDPI%" ') do set "ICONS=%%a"
 SET DEFEXL=NONO& SET /p DEFEXL=[Not recommended!] Type X to eXclude from Windows Defender: 
 SET DISTROFULL=%temp%
+SET DISTRO=kali-linux
 SET /A SESMAN = %RDPPRT% - 50
 CD %DISTROFULL%
 %TEMP%\LxRunOffline.exe su -n %DISTRO% -v 0
