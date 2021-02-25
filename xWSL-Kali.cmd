@@ -1,3 +1,4 @@
+@CHCP 65001 > NUL
 @ECHO OFF & NET SESSION >NUL 2>&1 
 IF %ERRORLEVEL% == 0 (ECHO Administrator check passed...) ELSE (ECHO You need to run this command with administrative rights.  Is User Account Control enabled? && pause && goto ENDSCRIPT)
 COLOR 1F
