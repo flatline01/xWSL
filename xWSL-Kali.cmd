@@ -58,7 +58,7 @@ ECHO [%TIME:~0,8%] Install xRDP and Kali-Linux-Core packages (~3m00s)
 %GO% "DEBIAN_FRONTEND=noninteractive apt-fast -y install /tmp/xWSL/deb/xrdp_0.9.13.1-1kali_amd64.deb /tmp/xWSL/deb/gksu_2.1.0_amd64.deb /tmp/xWSL/deb/libgksu2-0_2.1.0_amd64.deb /tmp/xWSL/deb/libgnome-keyring0_3.12.0-1+b2_amd64.deb /tmp/xWSL/deb/libgnome-keyring-common_3.12.0-1_all.deb /tmp/xWSL/deb/multiarch-support_2.27-3ubuntu1_amd64.deb /tmp/xWSL/deb/wslu_3.2.1-0kali1_amd64.deb sysv-rc fonts-cascadia-code compton-conf picom libxcb-damage0 xorgxrdp x11-apps x11-session-utils x11-xserver-utils dialog distro-info-data dumb-init inetutils-syslogd xdg-utils avahi-daemon libnss-mdns binutils putty unzip zip unar unzip dbus-x11 samba-common-bin lhasa arj unace liblhasa0 apt-config-icons apt-config-icons-hidpi apt-config-icons-large apt-config-icons-large-hidpi libgtkd-3-0 libvte-2.91-0 libvte-2.91-common libvted-3-0 tilix tilix-common libdbus-glib-1-2 xvfb xbase-clients python3-psutil kali-linux-core synaptic --no-install-recommends"  > "%TEMP%\Kali-xRDP\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Install xRDP and Kali-Linux-Core packages.log" 2>&1
 
 ECHO [%TIME:~0,8%] Kali-Desktop-XFCE (~5m00s)
-%GO% "DEBIAN_FRONTEND=noninteractive apt-fast -y install kali-desktop-xfce ; apt -y purge pcscd blueman bluez pulseaudio-module-bluetooth firefox-esr gir1.2-ayatanaappindicator3-0.1 gir1.2-nm-1.0 libccid libsbc1" > "%TEMP%\Kali-xRDP\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Kali-Desktop-XFCE.log" 2>&1
+%GO% "DEBIAN_FRONTEND=noninteractive apt-fast -y install kali-desktop-xfce ; apt -y purge pcscd blueman bluez pulseaudio-module-bluetooth firefox-esr gir1.2-ayatanaappindicator3-0.1 gir1.2-nm-1.0 libccid libsbc1 xfce4-power-manager --autoremove" > "%TEMP%\Kali-xRDP\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Kali-Desktop-XFCE.log" 2>&1
 
 REM ## Additional items to install can go here...
 ECHO [%TIME:~0,8%] Additional Components (~1m00s)
@@ -106,7 +106,7 @@ ECHO $prd = Get-Content .tmp > .tmp.ps1
 ECHO ($prd ^| ConvertTo-SecureString -AsPlainText -Force) ^| ConvertFrom-SecureString ^| Out-File .tmp  >> .tmp.ps1
 POWERSHELL -ExecutionPolicy Bypass -Command ./.tmp.ps1
 TYPE .tmp>.tmpsec.txt
-COPY /y /b xWSL._+.tmpsec.txt "%DISTROFULL%\%DISTRO% (%XU%) Desktop.rdp" > NUL
+COPY /y /b xWSL._+.tmpsec.txt "%DISTROFULL%\Kali-xRDP (%XU%).rdp" > NUL
 DEL /Q  xWSL._ .tmp*.* > NUL
 ECHO:
 ECHO Open Windows Firewall Ports for xRDP, SSH, mDNS...
@@ -118,7 +118,7 @@ ECHO Building RDP Connection file, Init system...
 ECHO @START /MIN "%DISTRO%" WSLCONFIG.EXE /t %DISTRO%                  >  "%LOCALAPPDATA%\Kali-xRDP.cmd"
 ECHO @Powershell.exe -Command "Start-Sleep 3"                          >> "%LOCALAPPDATA%\Kali-xRDP.cmd"
 ECHO @START /MIN "%DISTRO%" WSL.EXE ~ -u root -d %DISTRO% -e initwsl 2 >> "%LOCALAPPDATA%\Kali-xRDP.cmd"
-POWERSHELL -Command "Copy-Item '%DISTROFULL%\%DISTRO% (%XU%) Desktop.rdp' ([Environment]::GetFolderPath('Desktop'))"
+POWERSHELL -Command "Copy-Item '%DISTROFULL%\Kali-xRDP (%XU%).rdp' ([Environment]::GetFolderPath('Desktop'))"
 ECHO Building Scheduled Task...
 %GO% "cp /tmp/xWSL/xWSL.xml ."
 POWERSHELL -C "$WAI = (whoami)                       ; (Get-Content .\xWSL.xml).replace('AAAA', $WAI) | Set-Content .\xWSL.xml"
