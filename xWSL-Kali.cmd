@@ -114,7 +114,7 @@ NETSH AdvFirewall Firewall add rule name="%DISTRO% xRDP" dir=in action=allow pro
 NETSH AdvFirewall Firewall add rule name="%DISTRO% Secure Shell" dir=in action=allow protocol=TCP localport=%SSHPRT% > NUL
 NETSH AdvFirewall Firewall add rule name="%DISTRO% Avahi Daemon" dir=in action=allow protocol=UDP localport=5353,53791 > NUL
 START /MIN "%DISTRO% Init" WSL ~ -u root -d %DISTRO% -e initwsl 2
-ECHO Building RDP Connection file, Console link, Init system...
+ECHO Building RDP Connection file, Init system...
 ECHO @START /MIN "%DISTRO%" WSLCONFIG.EXE /t %DISTRO%                  >  "%LOCALAPPDATA%\Kali-xRDP.cmd"
 ECHO @Powershell.exe -Command "Start-Sleep 3"                          >> "%LOCALAPPDATA%\Kali-xRDP.cmd"
 ECHO @START /MIN "%DISTRO%" WSL.EXE ~ -u root -d %DISTRO% -e initwsl 2 >> "%LOCALAPPDATA%\Kali-xRDP.cmd"
